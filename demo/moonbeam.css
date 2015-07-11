@@ -1,0 +1,7 @@
+.mb-hl {
+  background-color: orange;
+}
+
+.mb-hl > .mb-hl {
+  background-color: yellow;
+}

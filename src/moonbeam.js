@@ -10,6 +10,18 @@
 
 var moonbeam = (function __moonbeam__() {
   var dom = (function __ut__() {
+    function _getCurrentSelection() {
+      var selection;
+
+      if(window.getSelection) {
+        selection = window.getSelection();
+      } else if(document.selection && document.selection.type !== 'Control') {
+        selection = document.selection; 
+      }
+
+      return selection;
+    }
+
     function getSelectedText() {
       var text = ''; 
 
@@ -52,19 +64,15 @@ var moonbeam = (function __moonbeam__() {
       return tmp.body.children;
     }
 
-    function transferStyles(nodeFrom, nodeTo) {
-      var cs = window.getComputedStyle(nodeFrom, null);
-      var styles = {};
-      var prop;
-
-      for(var i = 0, l = cs.length; i < l; ++i) {
-        prop = cs[i];
-        styles[prop] = cs.getPropertyValue(prop);  
-      }
+    function getActiveRange() {
+      var selection = _getCurrentSelection();
+      var range; 
       
-      for(var key in styles) {
-        nodeTo.style[key] = styles[key];    
+      if(selection.rangeCount > 0) {
+        range = selection.getRangeAt(0); 
       }
+
+      return range;
     }
 
     function transferAttrs(nodeFrom, nodeTo) {
@@ -86,8 +94,8 @@ var moonbeam = (function __moonbeam__() {
       addClass: addClass,
       removeClass: removeClass,
       getNodeTree: getNodeTree,
-      transferStyles: transferStyles,
-      transferAttrs: transferAttrs
+      transferAttrs: transferAttrs,
+      getActiveRange: getActiveRange
     };
   })();
 
@@ -99,13 +107,38 @@ var moonbeam = (function __moonbeam__() {
     var container = dom.getNodeTree('<div class="moonbeamed"></div>')[0];
     var button = dom.getNodeTree('<a href="javascript:void(0)" class="btn">comment</a>')[0];
 
+    container.style.position = 'relative';
+    button.style.position = 'absolute';
+    button.style.top = '0';
+    button.style.right = '5px';
+
     dom.transferAttrs(node, container);
 
     container.appendChild(button);
     container.appendChild(node.cloneNode(true));
 
     button.addEventListener('click', function(e) {
-      console.log(dom.getSelectedText()); 
+      var range = dom.getActiveRange();
+      var wrapper = dom.getNodeTree('<span class="mb-hl"></span>')[0];
+      var node;
+
+      // Handle double click
+      wrapper.addEventListener('dblclick', function(e) {
+        var parentNode = wrapper.parentNode;
+        console.log(wrapper.childNodes);
+
+        parentNode.replaceChild(wrapper.childNodes[0], wrapper);
+        parentNode.normalize();
+      });
+
+      wrapper.addEventListener('click', function(e) {
+            
+      });
+
+      if(range) {
+        console.log(range.toString());
+        range.surroundContents(wrapper);
+      }
     });
 
     node.parentNode.replaceChild(container, node);
