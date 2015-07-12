@@ -18,11 +18,6 @@ var moonbeam = (function __moonbeam__() {
     var container = dom.getNodeTree(tmpl.get('container'))[0];
     var button = dom.getNodeTree(tmpl.get('button'))[0];
 
-    container.style.position = 'relative';
-    button.style.position = 'absolute';
-    button.style.top = '0';
-    button.style.right = '5px';
-
     dom.transferAttrs(node, container);
 
     container.appendChild(button);
@@ -30,7 +25,7 @@ var moonbeam = (function __moonbeam__() {
 
     button.addEventListener('click', function(e) {
       var range = dom.getActiveRange();
-      var wrapper = dom.getNodeTree('<span class="mb-hl"></span>')[0];
+      var wrapper = dom.getNodeTree(tmpl.get('highlight'))[0];
       var node;
 
       // Handle double click
