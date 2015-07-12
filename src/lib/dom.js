@@ -57,13 +57,14 @@ var dom = (function __ut__() {
 
   /*
    * Create a node tree from an HTML string.
+   * Returns top-level node.
    *
    * @param {string} htmlStr - The HTML string
    */
-  function getNodeTree(htmlStr) {
+  function createNodeTree(htmlStr) {
     var tmp = document.implementation.createHTMLDocument();
     tmp.body.innerHTML = htmlStr;
-    return tmp.body.children;
+    return tmp.body.children[0];
   }
 
   /*
@@ -104,7 +105,7 @@ var dom = (function __ut__() {
   return {
     addClass: addClass,
     removeClass: removeClass,
-    getNodeTree: getNodeTree,
+    createNodeTree: createNodeTree,
     transferAttrs: transferAttrs,
     getActiveRange: getActiveRange
   };

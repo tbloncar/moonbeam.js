@@ -15,8 +15,8 @@ var moonbeam = (function __moonbeam__() {
    * @param {Element} node - The text container node
    */
   function bind(node) {
-    var container = dom.getNodeTree(tmpl.get('container'))[0];
-    var button = dom.getNodeTree(tmpl.get('button'))[0];
+    var container = dom.createNodeTree(tmpl.get('container'));
+    var button = dom.createNodeTree(tmpl.get('button'));
 
     dom.transferAttrs(node, container);
 
@@ -25,7 +25,7 @@ var moonbeam = (function __moonbeam__() {
 
     button.addEventListener('click', function(e) {
       var range = dom.getActiveRange();
-      var wrapper = dom.getNodeTree(tmpl.get('highlight'))[0];
+      var wrapper = dom.createNodeTree(tmpl.get('highlight'));
       var node;
 
       // Handle double click
