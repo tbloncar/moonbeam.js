@@ -4,7 +4,6 @@
  * DOM helpers inspired by youmightnotneedjquery.com
  */
 
-
 var dom = (function __ut__() {
   function _getCurrentSelection() {
     var selection;
